@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Deep Learning | Academic</title>
-    <link>http://hushuzuiniu.github.io/tag/deep-learning/</link>
-      <atom:link href="http://hushuzuiniu.github.io/tag/deep-learning/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://example.com/tag/deep-learning/</link>
+      <atom:link href="https://example.com/tag/deep-learning/index.xml" rel="self" type="application/rss+xml" />
     <description>Deep Learning</description>
     <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 27 Apr 2016 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://hushuzuiniu.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>Deep Learning</title>
-      <link>http://hushuzuiniu.github.io/tag/deep-learning/</link>
+      <link>https://example.com/tag/deep-learning/</link>
     </image>
     
     <item>
       <title>project1</title>
-      <link>http://hushuzuiniu.github.io/project/example/</link>
+      <link>https://example.com/project/example/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>http://hushuzuiniu.github.io/project/example/</guid>
+      <guid>https://example.com/project/example/</guid>
       <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
 </description>
     </item>
