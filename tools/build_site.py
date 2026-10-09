@@ -57,8 +57,9 @@ for lang in ['en','zh']:
   paper_title=h(p['title'])+'.'
   if p.get('doi'):paper_title=f'<a href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">{paper_title}</a>'
   pubs+=f'<li><div>{authors}.</div><div>{paper_title}</div><div><em>{h(p["venue"])}</em>. {p["year"]}{"; "+h(p["details"]) if p["details"] else ""}.</div>'
-  if p.get('status_'+lang):pubs+='<div><strong>'+h(p['status_'+lang])+' · '+h(p['note_'+lang])+'</strong></div>'
+  if p.get('status_'+lang):pubs+='<div><strong>'+h(p['status_'+lang])+(' · '+h(p['note_'+lang]) if p.get('note_'+lang) else '')+'</strong></div>'
   if p.get('doi'):pubs+=f'<a class="pub-doi" href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">doi: {p["doi"]}</a>'
+  if p.get('code_url'):pubs+=f'<a class="pub-doi" href="{h(p["code_url"])}" target="_blank" rel="noopener">UniCAV {"代码" if zh else "code"}</a>'
   pubs+='</li>'
  pubs+='</ol>'
  about.addnext(section('publications','论文成果' if zh else 'Publications',pubs))

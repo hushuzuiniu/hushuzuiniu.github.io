@@ -68,8 +68,8 @@
       "institution_zh": "香港大学",
       "role_en": "Research Assistant I",
       "role_zh": "一级科研助理",
-      "date_en": "2023–2024",
-      "date_zh": "2023—2024",
+      "date_en": "Jun 2023 – Jun 2024",
+      "date_zh": "2023.06—2024.06",
       "bullets_en": [
         "Conducted bioinformatics analyses of viral evolution and genomic epidemiology, with a focus on influenza and RSV.",
         "Integrated genomic, clinical and immunological datasets and contributed to collaborative research publications."
@@ -99,10 +99,6 @@
       "id": "hu2026unicav",
       "year": 2026,
       "authors": "Hu S, Ye D, Liao M, Xu T, Fan T, Dong N, Cui J",
-      "equal_first": [
-        "Hu S",
-        "Ye D"
-      ],
       "title": "Paired Env-antibody representation learning predicts HIV-1 neutralization and traces antibody escape across viral evolution",
       "venue": "Cell Reports Methods",
       "short_venue": "Cell Reports Methods",
@@ -110,9 +106,8 @@
       "doi": "",
       "status_en": "Under revision",
       "status_zh": "返修中",
-      "note_en": "Co-first author",
-      "note_zh": "共同第一作者",
-      "source": "User-supplied manuscript; revision status confirmed by author on 2026-10-09."
+      "source": "User-supplied manuscript; revision status confirmed by author on 2026-10-09.",
+      "code_url": "https://github.com/hushuzuiniu/UniCAV"
     },
     {
       "id": "ye2026virobench",
@@ -293,11 +288,11 @@
     "date_en": "Sep 2025 – present",
     "date_zh": "2025.09—至今",
     "bullets_en": [
-      "Co-developed the UniCAV model and training framework; curated datasets, conducted computational analyses and benchmarks, and drafted the manuscript (co-first author; Cell Reports Methods, under revision).",
+      "Co-developed the UniCAV model and training framework; curated datasets, conducted computational analyses and benchmarks, and drafted the manuscript (Cell Reports Methods, under revision).",
       "Contributed to ViroBench, a benchmark study of nucleotide foundation models published at KDD 2026."
     ],
     "bullets_zh": [
-      "共同设计并实现UniCAV模型及训练框架，承担数据整理、计算分析、基准评测与初稿撰写；共同第一作者稿件正在Cell Reports Methods返修。",
+      "共同设计并实现UniCAV模型及训练框架，承担数据整理、计算分析、基准评测与初稿撰写；相关稿件正在Cell Reports Methods返修。",
       "参与核酸基础模型评测研究ViroBench，相关成果发表于KDD 2026。"
     ]
   },
