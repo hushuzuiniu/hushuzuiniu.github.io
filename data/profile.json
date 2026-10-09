@@ -469,58 +469,6 @@
           "label_zh": "分析代码"
         }
       ]
-    },
-    {
-      "id": "cancer-genomics",
-      "name_en": "Cancer genomics and copy-number analysis",
-      "name_zh": "肿瘤基因组与拷贝数分析",
-      "meta_en": "Industry research · Sequencing analysis methods",
-      "meta_zh": "产业研发 · 测序分析方法",
-      "summary_en": "My industry work included the development of bioinformatics methods for gene-fusion and copy-number analysis. The projects connected sequencing-data analysis with practical questions arising in molecular-testing workflows.",
-      "summary_zh": "产业研发工作包括基因融合与拷贝数分析方法开发，将测序数据分析与分子检测流程中的实际问题相结合。",
-      "contributions_en": [
-        "Developed analysis methods for BCL6, BCL2 and MYC fusions in DLBCL workflows, addressing discrepancies between NGS and FISH results.",
-        "Established low-depth whole-genome sequencing workflows for copy-number analysis using QDNAseq, Control-FREEC and ichorCNA."
-      ],
-      "contributions_zh": [
-        "围绕弥漫大B细胞淋巴瘤中的BCL6、BCL2和MYC基因融合开发分析方法，处理NGS与FISH结果不一致的问题。",
-        "整合QDNAseq、Control-FREEC和ichorCNA，搭建低深度全基因组测序拷贝数分析流程。"
-      ],
-      "output_en": "Contributed to bioinformatics method and workflow development in industry; related analysis code is available on GitHub.",
-      "output_zh": "参与产业场景中的生物信息学方法与流程开发，相关分析代码可通过GitHub访问。",
-      "links": [
-        {
-          "url": "https://github.com/hushuzuiniu/DNA-CNV",
-          "label_en": "Related analysis code",
-          "label_zh": "相关分析代码"
-        }
-      ]
-    },
-    {
-      "id": "shiny-transcriptomics",
-      "name_en": "Interactive transcriptomics with R Shiny",
-      "name_zh": "基于R Shiny的交互式转录组分析",
-      "meta_en": "MSc research · The University of Edinburgh",
-      "meta_zh": "硕士阶段研究 · 爱丁堡大学",
-      "summary_en": "During my MSc research, I developed tools for interactive exploration of RNA-seq data. The project connects R programming with Shiny application development to make transcriptomic analyses accessible through an interactive interface.",
-      "summary_zh": "硕士阶段开发用于RNA测序数据交互式探索的工具，将R编程与Shiny应用开发相结合，通过交互界面呈现转录组分析。",
-      "contributions_en": [
-        "Created reusable Shiny modules for applications working with sequencing data.",
-        "Developed R scripts for interactive exploration of RNA-seq datasets."
-      ],
-      "contributions_zh": [
-        "开发可复用的Shiny模块，用于构建测序数据分析应用。",
-        "编写R脚本，支持RNA测序数据集的交互式探索。"
-      ],
-      "output_en": "Reusable analysis scripts and Shiny components for transcriptomics, with related code available on GitHub.",
-      "output_zh": "形成可复用的转录组分析脚本与Shiny组件，相关代码可通过GitHub访问。",
-      "links": [
-        {
-          "url": "https://github.com/hushuzuiniu/shiny_liver",
-          "label_en": "Related R Shiny code",
-          "label_zh": "相关R Shiny代码"
-        }
-      ]
     }
   ]
 }
