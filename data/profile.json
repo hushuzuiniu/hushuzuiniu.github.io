@@ -8,8 +8,8 @@
   "scholar": "https://scholar.google.com/citations?user=j-DhCscAAAAJ&hl=en",
   "researchgate": "https://www.researchgate.net/profile/Shu-Hu-19/research",
   "orcid": "https://orcid.org/0009-0002-3481-3256",
-  "bio_en": "I am a PhD student in the Department of Microbiology, School of Life Sciences, Fudan University, with an expected graduation date of June 2029. My research interests span viral evolution, genomic epidemiology and computational approaches to emerging infectious diseases. I combine research experience at the University of Hong Kong with industry experience in bioinformatics, including transcriptomics, single-cell analysis and genomic data analysis workflows.",
-  "bio_zh": "我现为复旦大学生命科学学院微生物系博士研究生，预计于2029年6月毕业。研究兴趣包括病毒进化、基因组流行病学，以及新发传染病研究中的计算方法。此前在香港大学从事科研工作，并在生物技术企业积累了转录组、单细胞分析和基因组数据分析流程开发经验。",
+  "bio_en": "I am a PhD student in the Department of Microbiology, School of Life Sciences, Fudan University, with an expected graduation date of June 2029. My research combines AI foundation models, biological sequence representation learning and deep learning with viral evolution and genomic epidemiology. My experience includes nucleotide foundation-model benchmarking, protein language-model applications, computational model development and evaluation, and bioinformatics analysis workflows.",
+  "bio_zh": "我现为复旦大学生命科学学院微生物系博士研究生，预计于2029年6月毕业。研究结合AI大模型与基础模型、生物序列表征学习及深度学习，关注病毒进化与基因组流行病学。研究经历涵盖核酸基础模型评测、蛋白质语言模型应用、计算模型开发与评估，以及生物信息学分析流程构建。",
   "education": [
     {
       "institution_en": "Fudan University",
@@ -95,6 +95,25 @@
     }
   ],
   "publications": [
+    {
+      "id": "hu2026unicav",
+      "year": 2026,
+      "authors": "Hu S, Ye D, Liao M, Xu T, Fan T, Dong N, Cui J",
+      "equal_first": [
+        "Hu S",
+        "Ye D"
+      ],
+      "title": "Paired Env-antibody representation learning predicts HIV-1 neutralization and traces antibody escape across viral evolution",
+      "venue": "Cell Reports Medicine",
+      "short_venue": "Cell Reports Medicine",
+      "details": "",
+      "doi": "",
+      "status_en": "Under revision",
+      "status_zh": "返修中",
+      "note_en": "Co-first author",
+      "note_zh": "共同第一作者",
+      "source": "User-supplied manuscript; revision status confirmed by author on 2026-10-09."
+    },
     {
       "id": "ye2026virobench",
       "year": 2026,
@@ -234,28 +253,63 @@
   ],
   "skills": [
     {
+      "label_en": "AI and foundation models",
+      "label_zh": "AI大模型与基础模型",
+      "text_en": "Nucleotide foundation-model benchmarking; protein language models; biological sequence representations.",
+      "text_zh": "核酸基础模型评测、蛋白质语言模型应用、生物序列表征学习。"
+    },
+    {
+      "label_en": "Deep learning",
+      "label_zh": "深度学习",
+      "text_en": "Model development, training, evaluation, benchmarking and interpretation.",
+      "text_zh": "模型开发与训练、性能评估、基准测试及模型解释。"
+    },
+    {
       "label_en": "Programming and computing",
       "label_zh": "编程与计算",
-      "text_en": "R, Python, Linux, Shell, Docker, SQL",
-      "text_zh": "R、Python、Linux、Shell、Docker、SQL"
+      "text_en": "R, Python, Linux, Shell, Docker, SQL.",
+      "text_zh": "R、Python、Linux、Shell、Docker、SQL。"
     },
     {
-      "label_en": "Genomic data analysis",
-      "label_zh": "组学数据分析",
-      "text_en": "RNA-seq, single-cell RNA-seq, whole-genome sequencing, copy-number analysis and workflow development",
-      "text_zh": "RNA-seq、单细胞RNA-seq、全基因组测序、拷贝数分析与流程开发"
-    },
+      "label_en": "Bioinformatics",
+      "label_zh": "生物信息学",
+      "text_en": "Phylogenetics, BEAST, Nextstrain, RNA-seq, single-cell RNA-seq, WGS and copy-number analysis.",
+      "text_zh": "系统发育分析、BEAST、Nextstrain、RNA-seq、单细胞RNA-seq、WGS与拷贝数分析。"
+    }
+  ],
+  "languages": {
+    "en": "English: CET-6 535; IELTS 6.0.",
+    "zh": "英语：大学英语六级（CET-6）535分；雅思（IELTS）6.0。"
+  },
+  "research_focus": {
+    "en": "AI foundation models · Sequence representation learning · Deep learning · Viral evolution",
+    "zh": "AI大模型与基础模型 · 生物序列表征学习 · 深度学习 · 病毒进化"
+  },
+  "current_research": {
+    "institution_en": "Fudan University",
+    "institution_zh": "复旦大学",
+    "role_en": "PhD Research",
+    "role_zh": "博士阶段研究",
+    "date_en": "Sep 2025 – present",
+    "date_zh": "2025.09—至今",
+    "bullets_en": [
+      "Co-developed the UniCAV model and training framework; curated datasets, conducted computational analyses and benchmarks, and drafted the manuscript (co-first author; Cell Reports Medicine, under revision).",
+      "Contributed to ViroBench, a benchmark study of nucleotide foundation models published at KDD 2026."
+    ],
+    "bullets_zh": [
+      "共同设计并实现UniCAV模型及训练框架，承担数据整理、计算分析、基准评测与初稿撰写；共同第一作者稿件正在Cell Reports Medicine返修。",
+      "参与核酸基础模型评测研究ViroBench，相关成果发表于KDD 2026。"
+    ]
+  },
+  "ai_projects": [
     {
-      "label_en": "Evolution and modelling",
-      "label_zh": "进化分析与建模",
-      "text_en": "Phylogenetics, BEAST, Nextstrain, statistical analysis and deep learning",
-      "text_zh": "系统发育分析、BEAST、Nextstrain、统计分析与深度学习"
-    },
-    {
-      "label_en": "Visualisation and tools",
-      "label_zh": "可视化与工具开发",
-      "text_en": "R Shiny, interactive data exploration and scientific visualisation",
-      "text_zh": "R Shiny、交互式数据探索与科研可视化"
+      "name_en": "AI foundation models and deep learning",
+      "name_zh": "AI大模型、基础模型与深度学习",
+      "text_en": "Research experience in nucleotide foundation-model benchmarking and protein language-model applications. Co-developed computational models and training frameworks, curated datasets, performed benchmarking and model evaluation, and prepared research manuscripts.",
+      "text_zh": "具有核酸基础模型评测与蛋白质语言模型应用研究经历；参与计算模型及训练框架开发，承担数据整理、基准测试、模型评估和论文撰写。",
+      "url": "https://doi.org/10.1145/3770855.3819057",
+      "link_en": "ViroBench publication",
+      "link_zh": "ViroBench论文"
     }
   ]
 }

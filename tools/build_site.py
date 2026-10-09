@@ -45,7 +45,7 @@ for lang in ['en','zh']:
  bio+='</p>'
  inner(one(about,'.//div[@class="article-style"]'),bio)
  subs=about.xpath('.//div[@class="section-subheading"]');subs[0].text='研究兴趣' if zh else 'Interests';subs[1].text='教育背景' if zh else 'Education'
- interests=['病毒进化','基因组流行病学','计算生物学'] if zh else ['Viral evolution','Genomic epidemiology','Computational biology']
+ interests=['AI大模型与基础模型','深度学习与序列表征','病毒进化与基因组流行病学'] if zh else ['AI and foundation models','Deep learning and sequence representations','Viral evolution and genomic epidemiology']
  inner(one(about,'.//ul[contains(@class,"ul-interests")]'),''.join(f'<li><i class="fa-li fa-solid fa-book-open"></i>{v}</li>' for v in interests))
  edu=''
  for e in D['education']:
@@ -54,17 +54,30 @@ for lang in ['en','zh']:
  pubs='<ol class="academic-publications">'
  for p in D['publications']:
   authors=h(p['authors'].rstrip('.')).replace('Hu S','<strong>Hu S</strong>')
-  pubs+=f'<li><div>{authors}.</div><div><a href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">{h(p["title"])}.</a></div><div><em>{h(p["venue"])}</em>. {p["year"]}{"; "+h(p["details"]) if p["details"] else ""}.</div><a class="pub-doi" href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">doi: {p["doi"]}</a></li>'
+  paper_title=h(p['title'])+'.'
+  if p.get('doi'):paper_title=f'<a href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">{paper_title}</a>'
+  pubs+=f'<li><div>{authors}.</div><div>{paper_title}</div><div><em>{h(p["venue"])}</em>. {p["year"]}{"; "+h(p["details"]) if p["details"] else ""}.</div>'
+  if p.get('status_'+lang):pubs+='<div><strong>'+h(p['status_'+lang])+' · '+h(p['note_'+lang])+'</strong></div>'
+  if p.get('doi'):pubs+=f'<a class="pub-doi" href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">doi: {p["doi"]}</a>'
+  pubs+='</li>'
  pubs+='</ol>'
  about.addnext(section('publications','论文成果' if zh else 'Publications',pubs))
  skills=one(x,'//*[@id="skills"]')
+ technical=skills.xpath('.//div[@class="col-12 col-md-6"]')[0]
+ skill_icons=['fa-brain','fa-network-wired','fa-code','fa-dna']
+ details='<div class="skill-group-title">'+('专业技能' if zh else 'Technical')+'</div>'
+ for sk,icon in zip(D['skills'],skill_icons):
+  details+=f'<div class="skills-content"><span class="skills-icon"><i class="fas {icon}"></i></span><span class="skills-name">{h(sk["label_"+lang])}</span><p class="skill-detail">{h(sk["text_"+lang])}</p></div>'
+ details+='<p class="language-scores"><strong>'+('语言能力' if zh else 'Languages')+'</strong><br>'+h(D['languages'][lang])+'</p>'
+ inner(technical,details)
  if zh:
   for e in skills.xpath('.//*'):
    if e.text and e.text.strip() in {'Skills':'技能与兴趣','Technical':'专业技能','Hobbies':'个人兴趣','Hiking':'徒步','Cats':'猫','Photography':'摄影','travel':'旅行','music':'音乐','docker':'Docker'}:e.text={'Skills':'技能与兴趣','Technical':'专业技能','Hobbies':'个人兴趣','Hiking':'徒步','Cats':'猫','Photography':'摄影','travel':'旅行','music':'音乐','docker':'Docker'}[e.text.strip()]
  exp=one(x,'//*[@id="experience"]');one(exp,'.//h1').text='研究与工作经历' if zh else 'Experience'
  container=one(exp,'.//div[@class="col-12 col-lg-8"]');examples=container.xpath('./div[contains(@class,"experience")]');template=deepcopy(examples[0])
  inner(container,'')
- phd={'institution_en':'Fudan University','institution_zh':'复旦大学','role_en':'PhD Student','role_zh':'博士研究生','date_en':'Sep 2025 – present · Expected Jun 2029','date_zh':'2025.09—至今 · 预计2029.06毕业','bullets_en':['Department of Microbiology, School of Life Sciences.','Research interests: viral evolution, genomic epidemiology and computational biology.'],'bullets_zh':['生命科学学院微生物系。','研究兴趣：病毒进化、基因组流行病学与计算生物学。']}
+ phd=D['current_research']
+ phd=dict(phd,role_en='PhD Student',role_zh='博士研究生')
  ed={'institution_en':'The University of Edinburgh','institution_zh':'爱丁堡大学','role_en':'MSc Research','role_zh':'硕士阶段研究','date_en':'Feb – Sep 2022','date_zh':'2022.02—2022.09','bullets_en':[D['projects'][3]['text_en']],'bullets_zh':[D['projects'][3]['text_zh']]}
  for j,(e,logo,link) in enumerate([(phd,None,'https://www.fudan.edu.cn/'),(D['experience'][0],'gene','https://www.rightongene.com/'),(D['experience'][1],'hku','https://www.hku.hk/'),(ed,'uoe','https://www.ed.ac.uk/'),(D['experience'][2],'wo','https://www.scwwt.com/')]):
   card=deepcopy(template);one(card,'.//div[contains(@class,"exp-title")]').text=e['role_'+lang]
@@ -75,7 +88,7 @@ for lang in ['en','zh']:
   inner(one(card,'.//div[@class="card-text"]'),'<ul>'+''.join('<li>'+h(b)+'</li>' for b in e['bullets_'+lang])+'</ul>')
   one(card,'.//span[contains(@class,"badge")]').set('class','badge badge-pill border'+(' exp-fill' if j==0 else ''))
   container.append(card)
- projects=''.join(f'<div class="mb-4"><h3>{h(p["name_"+lang])}</h3><p>{h(p["text_"+lang])}</p><p><a href="{h(p["url"])}" target="_blank" rel="noopener">{h(p["link_"+lang])} <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p></div>' for p in D['projects'][:4])
+ projects=''.join(f'<div class="mb-4"><h3>{h(p["name_"+lang])}</h3><p>{h(p["text_"+lang])}</p><p><a href="{h(p["url"])}" target="_blank" rel="noopener">{h(p["link_"+lang])} <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p></div>' for p in D.get('ai_projects',[])+D['projects'][:4])
  exp.addnext(section('research','研究项目' if zh else 'Research Projects',projects))
  if zh:
   for e in x.xpath('//*[@id="section-markdown"]//h1'):e.text='珍藏时刻'
@@ -83,7 +96,7 @@ for lang in ['en','zh']:
  inner(one(contact,'.//div[@class="col-12 col-lg-8"]'),f'<ul class="fa-ul"><li><i class="fa-li fas fa-envelope fa-2x" aria-hidden="true"></i><span id="person-email"><a href="mailto:{D["email"]}">{D["email"]}</a></span></li><li><i class="fa-li fas fa-university fa-2x" aria-hidden="true"></i><span>{"复旦大学生命科学学院微生物系<br>中国上海" if zh else "Department of Microbiology, School of Life Sciences<br>Fudan University, Shanghai, China"}</span></li></ul>')
  foot=one(x,'//footer');inner(foot,f'<p class="powered-by">© 2026 {D["name_"+lang]} · <a href="{D["github"]}">GitHub</a></p><p class="powered-by">Published with <a href="https://hugoblox.com/" target="_blank" rel="noopener">Hugo Blox Builder</a></p>')
  for s in x.xpath('//script[contains(@src,"wowchemy-map")] | //script[contains(@src,"leaflet")]'):s.getparent().remove(s)
- head=one(x,'//head');head.append(fragment('<style>.academic-publications{padding-left:1.25rem}.academic-publications li{padding-left:.2rem;margin-bottom:1.7rem}.pub-doi{font-size:.85em;overflow-wrap:anywhere}.cv-downloads{font-size:.9em}.network-icon{flex-wrap:wrap}#profile .network-icon .big-icon{font-size:1.7rem}html[lang="zh-CN"] body{font-family:Roboto,"PingFang SC","Microsoft YaHei",sans-serif}html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-family:Montserrat,"PingFang SC","Microsoft YaHei",sans-serif}@media(max-width:575px){.academic-publications{padding-left:1rem}.home-section{padding:55px 0}.pub-doi{word-break:break-all}}@media(min-width:992px){#about{min-height:calc(100vh - 70px)}}</style>'))
+ head=one(x,'//head');head.append(fragment('<style>.skill-detail{font-size:.82rem;line-height:1.55;margin:8px 0 18px}.skills-name{font-weight:600}.language-scores{font-size:.85rem}.academic-publications{padding-left:1.25rem}.academic-publications li{padding-left:.2rem;margin-bottom:1.7rem}.pub-doi{font-size:.85em;overflow-wrap:anywhere}.cv-downloads{font-size:.9em}.network-icon{flex-wrap:wrap}#profile .network-icon .big-icon{font-size:1.7rem}html[lang="zh-CN"] body{font-family:Roboto,"PingFang SC","Microsoft YaHei",sans-serif}html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-family:Montserrat,"PingFang SC","Microsoft YaHei",sans-serif}@media(max-width:575px){.academic-publications{padding-left:1rem}.home-section{padding:55px 0}.pub-doi{word-break:break-all}}@media(min-width:992px){#about{min-height:calc(100vh - 70px)}}</style>'))
  for l in ['en','zh-CN','x-default']:
   head.append(fragment(f'<link rel="alternate" hreflang="{l}" href="{D["website"]+("zh/" if l=="zh-CN" else "")}">'))
  result=H.tostring(x,encoding='unicode',doctype='<!DOCTYPE html>').replace('https://example.com/',D['website'])
