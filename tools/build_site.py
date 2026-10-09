@@ -1,52 +1,91 @@
 from pathlib import Path
-import json,html,shutil,re
+from copy import deepcopy
+import json,re
+from html import escape as h
+from lxml import html as H,etree
 BASE=Path(__file__).resolve().parents[1]
-D=json.loads((BASE/'data/profile.json').read_text())
-SITE=BASE;SITE.mkdir(exist_ok=True)
-(SITE/'assets').mkdir(exist_ok=True);(SITE/'zh').mkdir(exist_ok=True);(SITE/'en').mkdir(exist_ok=True);(SITE/'uploads').mkdir(exist_ok=True)
-
-portrait=BASE/'authors/admin/avatar_hu18a1226abc080b42d9a4951bd97606bd_2769724_270x270_fill_q75_lanczos_center.jpg'
-shutil.copy(portrait,SITE/'assets/shu-hu.jpg')
-E=html.escape
-
-def make(lang):
- zh=lang=='zh';pre='../' if zh else './';L=lambda en,cn:cn if zh else en
- nav=[('about','About','简介'),('publications','Publications','论文'),('education','Education','教育'),('experience','Experience','经历'),('projects','Projects','项目'),('skills','Skills','技能'),('cv','Curriculum vitae','简历'),('contact','Contact','联系')]
- def a(url,t,cls=''):return f'<a href="{E(url,quote=True)}"'+(f' class="{cls}"' if cls else '')+f'>{t}</a>'
- def pub(x):
-  authors=E(x.get('authors_'+lang,x['authors']));authors=re.sub(r'\bHu S\b','<strong>Hu S</strong>',authors).replace('胡书','<strong>胡书</strong>')
-  return f'''<article class="pub" data-kind="{x['kind']}"><div class="pub-year">{x['year']}</div><div><h3>{a('https://doi.org/'+x['doi'],E(x.get('title_'+lang,x['title'])))}</h3><p class="authors">{authors}</p><p class="venue"><em>{E(x.get('venue_'+lang,x['venue']))}</em> · {E(x.get('details_'+lang,x['details']))}</p><div class="pub-meta"><span class="badge {x['kind']}">{E(x['label_'+lang])}</span>{a('https://doi.org/'+x['doi'],'DOI ↗')}</div></div></article>'''
- pubs=''.join(pub(x) for x in D['publications'])
- ed=''.join(f'''<article class="entry"><p class="date">{E(x['date_'+lang])}</p><h3>{E(x['institution_'+lang])} · {E(x['degree_'+lang])}</h3><p class="detail">{E(x['detail_'+lang])}</p></article>''' for x in D['education'])
- ex=''.join(f'''<article class="entry"><p class="date">{E(x['date_'+lang])}</p><h3>{E(x['institution_'+lang])}</h3><p class="detail">{E(x['role_'+lang])}</p><ul>{''.join('<li>'+E(b)+'</li>' for b in x['bullets_'+lang])}</ul></article>''' for x in D['experience'])
- projs=''.join(f'''<article class="project"><p class="date">{E(x['date_'+lang])}</p><h3>{E(x['name_'+lang])}</h3><p>{E(x['text_'+lang])}</p>{a(x['url'],E(x['link_'+lang])+' ↗') if x['url'] else ''}</article>''' for x in D['projects'][:4])
- skills=''.join(f'<div><h3>{E(x["label_"+lang])}</h3><p>{E(x["text_"+lang])}</p></div>' for x in D['skills'])
- description=L('Shu Hu is a PhD student in Microbiology at Fudan University. Research interests include viral evolution, genomic epidemiology and bioinformatics.','胡书，复旦大学生命科学学院微生物系博士研究生，研究兴趣包括病毒进化、基因组流行病学与生物信息学。')
- title=L('Shu Hu | Microbiology & Bioinformatics | Fudan University','胡书 | 微生物学与生物信息学 | 复旦大学')
- canonical=D['website']+('zh/' if zh else '')
- schema={'@context':'https://schema.org','@type':'Person','name':'Shu Hu','alternateName':'胡书','url':D['website'],'email':D['email'],'jobTitle':'PhD student','affiliation':{'@type':'CollegeOrUniversity','name':'Fudan University'},'sameAs':[D[k] for k in ['scholar','researchgate','github','orcid']]}
- filters=[('all','All','全部'),('published','Published','正式发表'),('preprint','Preprints','预印本'),('other','Other','其他发表')]
- count_labels={key:L(en,cn) for key,en,cn in [('all','8 works','8项成果'),('published','5 journal and conference publications','5篇期刊与会议论文'),('preprint','2 preprints','2篇预印本'),('other','1 other publication','1篇其他发表')]}
- htmltext=f'''<!doctype html>
-<html lang="{'zh-CN' if zh else 'en'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{E(title)}</title><meta name="description" content="{E(description,quote=True)}"><meta name="author" content="Shu Hu"><link rel="canonical" href="{canonical}"><link rel="alternate" hreflang="en" href="{D['website']}"><link rel="alternate" hreflang="zh-CN" href="{D['website']}zh/"><link rel="alternate" hreflang="x-default" href="{D['website']}"><meta property="og:title" content="{E(title,quote=True)}"><meta property="og:description" content="{E(description,quote=True)}"><meta property="og:type" content="profile"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{D['website']}assets/shu-hu.jpg"><meta name="theme-color" content="#245f50"><link rel="icon" href="{pre}assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{pre}assets/site.css"><script type="application/ld+json">{json.dumps(schema,ensure_ascii=False)}</script></head>
-<body><a class="skip" href="#content">{L('Skip to content','跳至正文')}</a><header class="top"><div class="wrap top-inner"><a class="brand" href="{'./' if zh else pre}">SHU HU <span>胡书</span></a><nav aria-label="{L('Main navigation','主导航')}"><a class="desktop-nav" href="#publications">{L('Publications','论文')}</a><a class="desktop-nav" href="#cv">CV</a><a href="#contact">{L('Contact','联系')}</a><a class="lang" href="{pre if zh else './zh/'}" lang="{'en' if zh else 'zh-CN'}" hreflang="{'en' if zh else 'zh-CN'}">{L('中文','English')} ↗</a></nav></div></header>
-<div class="wrap"><div class="hero"><div><p class="eyebrow">{L('MICROBIOLOGY · BIOINFORMATICS','微生物学 · 生物信息学')}</p><h1>{L('Shu Hu <span>胡书</span>','胡书 <span>Shu Hu</span>')}</h1><p class="role">{L('PhD Student · Fudan University','博士研究生 · 复旦大学')}</p><p class="affiliation">{L('Department of Microbiology, School of Life Sciences','生命科学学院微生物系')}</p><p class="intro">{L('Studying viral evolution and emerging infectious diseases through genomic data and computational methods.','以基因组数据和计算方法，研究病毒进化与新发传染病。')}</p><div class="links">{a(D['scholar'],'Google Scholar ↗')}{a(D['researchgate'],'ResearchGate ↗')}{a(D['github'],'GitHub ↗')}{a(D['orcid'],'ORCID ↗')}</div><div class="actions">{a(pre+'uploads/Shu_Hu_CV_'+lang.upper()+'.pdf',L('Download CV ↓','下载中文简历 ↓'),'button primary')}{a('#publications',L('View publications','查看论文'),'button')}</div></div><div class="hero-portrait"><img class="portrait" src="{pre}assets/shu-hu.jpg" width="230" height="230" alt="{L('Shu Hu at graduation','胡书的毕业照')}"><p class="portrait-caption">{L('The University of Edinburgh','爱丁堡大学')}</p></div></div>
-<div class="body-layout"><aside class="aside"><p>{L('On this page','页面导航')}</p><nav aria-label="{L('Section navigation','章节导航')}">{''.join(a('#'+ident,L(en,cn)) for ident,en,cn in nav)}</nav></aside><main id="content">
-<section id="about"><h2>{L('About','关于我')}</h2><p>{E(D['bio_'+lang])}</p><div class="topics"><div class="topic"><b>{L('Viral evolution','病毒进化')}</b><p>{L('Evolutionary patterns and genetic diversity.','进化模式与遗传多样性。')}</p></div><div class="topic"><b>{L('Genomic epidemiology','基因组流行病学')}</b><p>{L('Connecting genomic evidence with epidemiological questions.','结合基因组证据与流行病学问题。')}</p></div><div class="topic"><b>{L('Computational biology','计算生物学')}</b><p>{L('Data analysis, statistical modelling and reproducible tools.','数据分析、统计建模与可复用工具。')}</p></div></div></section>
-<section id="publications"><h2>{L('Publications','论文与预印本')}</h2><p class="section-note">{L('Published versions are prioritised. Earlier preprints of the same work are omitted. Preprints have not been peer reviewed.','优先列出正式发表版本，同一成果不重复列入早期预印本。预印本尚未经过同行评审。')}</p><div class="filters" role="group" aria-label="{L('Filter publications','筛选发表类型')}">{''.join(f'<button type="button" data-filter="{k}" aria-pressed="{str(k=="all").lower()}">{L(en,cn)}</button>' for k,en,cn in filters)}</div><p id="pub-count" class="section-note" aria-live="polite">{count_labels['all']}</p>{pubs}</section>
-<section id="education"><h2>{L('Education','教育背景')}</h2><div class="timeline">{ed}</div></section>
-<section id="experience"><h2>{L('Experience','工作经历')}</h2><div class="timeline">{ex}</div></section>
-<section id="projects"><h2>{L('Selected projects','部分科研与软件项目')}</h2>{projs}</section>
-<section id="skills"><h2>{L('Technical skills','技术能力')}</h2><div class="skills">{skills}</div></section>
-<section id="cv"><h2>{L('Curriculum vitae','学术简历')}</h2><p class="section-note">{L('English and Chinese versions · Updated October 2026','中英文版本 · 更新于2026年10月')}</p><div class="cv-grid"><div><h3>English</h3><p>{L('Full academic curriculum vitae.','完整英文学术简历。')}</p><div class="actions">{a(pre+'uploads/Shu_Hu_CV_EN.pdf','PDF ↓','button primary')}{a(pre+'uploads/Shu_Hu_CV_EN.docx','Word ↓','button')}</div></div><div><h3>中文</h3><p>{L('Chinese academic curriculum vitae.','完整中文学术简历。')}</p><div class="actions">{a(pre+'uploads/Shu_Hu_CV_ZH.pdf','PDF ↓','button primary')}{a(pre+'uploads/Shu_Hu_CV_ZH.docx','Word ↓','button')}</div></div></div></section>
-<section id="contact" class="contact"><h2>{L('Contact','联系我')}</h2><p class="contact-email">{a('mailto:'+D['email'],D['email'])}</p><p>{L('Department of Microbiology · School of Life Sciences<br>Fudan University · Shanghai, China','复旦大学生命科学学院微生物系<br>中国上海')}</p></section>
-</main></div><footer><span>© 2026 Shu Hu · 胡书</span><span>{L('Updated','更新于')} {D['updated']} · {a(D['github'],'GitHub ↗','footer-link')}</span></footer></div>
-<script>const labels={json.dumps(count_labels,ensure_ascii=False)};document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{{const filter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.querySelectorAll('.pub').forEach(p=>p.hidden=filter!=='all'&&p.dataset.kind!==filter);document.getElementById('pub-count').textContent=labels[filter];}}));</script></body></html>'''
- (SITE/('zh/index.html' if zh else 'index.html')).write_text(htmltext)
-for lang in ['en','zh']:make(lang)
-(SITE/'assets/favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#245f50"/><text x="32" y="43" text-anchor="middle" fill="white" font-family="Georgia,serif" font-size="34">H</text></svg>')
-(SITE/'en/index.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../"><link rel="canonical" href="https://hushuzuiniu.github.io/"><title>Shu Hu</title></head><body><a href="../">Shu Hu · Academic profile</a></body></html>')
-(SITE/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hushuzuiniu.github.io/</loc><lastmod>2026-10-09</lastmod></url><url><loc>https://hushuzuiniu.github.io/zh/</loc><lastmod>2026-10-09</lastmod></url></urlset>')
-(SITE/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: https://hushuzuiniu.github.io/sitemap.xml\n')
-(SITE/'.nojekyll').touch()
-print('Built bilingual website')
+D=json.loads((BASE/'data/profile.json').read_text());SITE=BASE
+T=(BASE/'tools/academic-template.txt').read_text()
+def fragment(s):return H.fragment_fromstring(s)
+def inner(el,s):
+ for c in list(el):el.remove(c)
+ el.text=None
+ for c in H.fragments_fromstring(s):
+  if isinstance(c,str):el.text=(el.text or '')+c
+  else:el.append(c)
+def one(root,s):return root.xpath(s)[0]
+def section(id,title,content):return fragment(f'<section id="{id}" class="home-section wg-markdown"><div class="home-section-bg"></div><div class="container"><div class="row"><div class="section-heading col-12 col-lg-4 mb-3 mb-lg-0 d-flex flex-column align-items-center align-items-lg-start"><h1 class="mb-0">{title}</h1></div><div class="col-12 col-lg-8">{content}</div></div></div></section>')
+for lang in ['en','zh']:
+ zh=lang=='zh';url=D['website']+('zh/' if zh else '');x=H.fromstring(T);x.set('lang','zh-CN' if zh else 'en')
+ title='胡书 | 复旦大学' if zh else 'Shu Hu | Fudan University'
+ one(x,'//title').text=title
+ for el in x.xpath('//meta[@name="description"]|//meta[@property="og:description"]|//meta[@name="twitter:description"]'):el.set('content',D['bio_'+lang])
+ for el in x.xpath('//meta[@property="og:title"]|//meta[@name="twitter:title"]'):el.set('content',title)
+ for el in x.xpath('//link[@rel="canonical"]'):el.set('href',url)
+ for el in x.xpath('//meta[@property="og:url"]'):el.set('content',url)
+ for el in x.xpath('//script[@type="application/ld+json"]'):el.text=json.dumps({'@context':'https://schema.org','@type':'Person','name':D['name_'+lang],'url':url,'email':D['email'],'affiliation':{'@type':'Organization','name':'Fudan University'},'sameAs':[D['scholar'],D['researchgate'],D['orcid'],D['github']]})
+ for el in x.xpath('//*[@class="navbar-brand"]'):el.text=D['name_'+lang];el.set('href','/zh/' if zh else '/')
+ nav=one(x,'//*[@id="navbar-content"]/ul')
+ labels=['首页','论文','技能','经历','联系'] if zh else ['Home','Publications','Skills','Experience','Contact']
+ inner(nav,''.join(f'<li class="nav-item"><a class="nav-link" href="#{id}" data-target="#{id}"><span>{lab}</span></a></li>' for id,lab in zip(['about','publications','skills','experience','contact'],labels)))
+ icons=one(x,'//ul[contains(@class,"nav-icons")]')
+ icons.insert(0,fragment(f'<li class="nav-item"><a class="nav-link" href="{"/" if zh else "/zh/"}" lang="{"en" if zh else "zh-CN"}" aria-label="Switch language">{"EN" if zh else "中文"}</a></li>'))
+ # Legacy full-site search points to obsolete template entries; current page navigation is the primary path.
+ for el in x.xpath('//li[a[contains(@class,"js-search")]]'):el.getparent().remove(el)
+ prof=one(x,'//*[@id="profile"]')
+ inner(one(prof,'.//div[@class="portrait-title"]'),f'<h2>{D["name_"+lang]}</h2><h3>{"微生物系博士研究生" if zh else "PhD Student in Microbiology"}</h3><h3><a href="https://www.fudan.edu.cn/" target="_blank" rel="noopener"><span>{"复旦大学" if zh else "Fudan University"}</span></a></h3>')
+ socials=[('mailto:'+D['email'],'fas fa-envelope','Email'),(D['scholar'],'fas fa-graduation-cap','Google Scholar'),(D['researchgate'],'fab fa-researchgate','ResearchGate'),(D['orcid'],'fab fa-orcid','ORCID'),(D['github'],'fab fa-github','GitHub')]
+ soc=one(prof,'.//ul[contains(@class,"network-icon")]');soc.attrib.pop('aria-hidden',None)
+ inner(soc,''.join(f'<li><a href="{h(u)}" target="_blank" rel="noopener" aria-label="{label}"><i class="{ico} big-icon" aria-hidden="true"></i></a></li>' for u,ico,label in socials))
+ about=one(x,'//*[@id="about"]');one(about,'.//h1').text='个人简介' if zh else 'Biography'
+ bio='<p>'+h(D['bio_'+lang])+'</p>'
+ bio+='<p class="cv-downloads">'+('简历下载：' if zh else 'Curriculum vitae: ')
+ for code,label in [('EN','English'),('ZH','中文')]:
+  bio+=f'<a href="/uploads/Shu_Hu_CV_{code}.pdf" target="_blank" rel="noopener">{label} PDF</a> · <a href="/uploads/Shu_Hu_CV_{code}.docx">Word</a> &nbsp; '
+ bio+='</p>'
+ inner(one(about,'.//div[@class="article-style"]'),bio)
+ subs=about.xpath('.//div[@class="section-subheading"]');subs[0].text='研究兴趣' if zh else 'Interests';subs[1].text='教育背景' if zh else 'Education'
+ interests=['病毒进化','基因组流行病学','计算生物学'] if zh else ['Viral evolution','Genomic epidemiology','Computational biology']
+ inner(one(about,'.//ul[contains(@class,"ul-interests")]'),''.join(f'<li><i class="fa-li fa-solid fa-book-open"></i>{v}</li>' for v in interests))
+ edu=''
+ for e in D['education']:
+  edu+=f'<li><i class="fa-li fa-solid fa-graduation-cap"></i><div class="description"><p class="course">{h(e["degree_"+lang])}</p><p class="institution">{h(e["institution_"+lang])}<br>{h(e["date_"+lang])}</p></div></li>'
+ inner(one(about,'.//ul[contains(@class,"ul-edu")]'),edu)
+ pubs='<ol class="academic-publications">'
+ for p in D['publications']:
+  authors=h(p['authors'].rstrip('.')).replace('Hu S','<strong>Hu S</strong>')
+  pubs+=f'<li><div>{authors}.</div><div><a href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">{h(p["title"])}.</a></div><div><em>{h(p["venue"])}</em>. {p["year"]}{"; "+h(p["details"]) if p["details"] else ""}.</div><a class="pub-doi" href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">doi: {p["doi"]}</a></li>'
+ pubs+='</ol>'
+ about.addnext(section('publications','论文成果' if zh else 'Publications',pubs))
+ skills=one(x,'//*[@id="skills"]')
+ if zh:
+  for e in skills.xpath('.//*'):
+   if e.text and e.text.strip() in {'Skills':'技能与兴趣','Technical':'专业技能','Hobbies':'个人兴趣','Hiking':'徒步','Cats':'猫','Photography':'摄影','travel':'旅行','music':'音乐','docker':'Docker'}:e.text={'Skills':'技能与兴趣','Technical':'专业技能','Hobbies':'个人兴趣','Hiking':'徒步','Cats':'猫','Photography':'摄影','travel':'旅行','music':'音乐','docker':'Docker'}[e.text.strip()]
+ exp=one(x,'//*[@id="experience"]');one(exp,'.//h1').text='研究与工作经历' if zh else 'Experience'
+ container=one(exp,'.//div[@class="col-12 col-lg-8"]');examples=container.xpath('./div[contains(@class,"experience")]');template=deepcopy(examples[0])
+ inner(container,'')
+ phd={'institution_en':'Fudan University','institution_zh':'复旦大学','role_en':'PhD Student','role_zh':'博士研究生','date_en':'Sep 2025 – present · Expected Jun 2029','date_zh':'2025.09—至今 · 预计2029.06毕业','bullets_en':['Department of Microbiology, School of Life Sciences.','Research interests: viral evolution, genomic epidemiology and computational biology.'],'bullets_zh':['生命科学学院微生物系。','研究兴趣：病毒进化、基因组流行病学与计算生物学。']}
+ ed={'institution_en':'The University of Edinburgh','institution_zh':'爱丁堡大学','role_en':'MSc Research','role_zh':'硕士阶段研究','date_en':'Feb – Sep 2022','date_zh':'2022.02—2022.09','bullets_en':[D['projects'][3]['text_en']],'bullets_zh':[D['projects'][3]['text_zh']]}
+ for j,(e,logo,link) in enumerate([(phd,None,'https://www.fudan.edu.cn/'),(D['experience'][0],'gene','https://www.rightongene.com/'),(D['experience'][1],'hku','https://www.hku.hk/'),(ed,'uoe','https://www.ed.ac.uk/'),(D['experience'][2],'wo','https://www.scwwt.com/')]):
+  card=deepcopy(template);one(card,'.//div[contains(@class,"exp-title")]').text=e['role_'+lang]
+  inner(one(card,'.//div[contains(@class,"exp-company")]'),f'<a href="{link}" target="_blank" rel="noopener">{h(e["institution_"+lang])}</a>')
+  inner(one(card,'.//div[contains(@class,"exp-meta")]'),h(e['date_'+lang]))
+  ico=one(card,'.//div[@class="mr-2 mb-2"]')
+  inner(ico,f'<img src="/media/icons/brands/{logo}.svg" width="56" height="56" alt="{h(e["institution_"+lang])}" loading="lazy">' if logo else '<span class="fas fa-graduation-cap fa-2x" style="width:56px" aria-hidden="true"></span>')
+  inner(one(card,'.//div[@class="card-text"]'),'<ul>'+''.join('<li>'+h(b)+'</li>' for b in e['bullets_'+lang])+'</ul>')
+  one(card,'.//span[contains(@class,"badge")]').set('class','badge badge-pill border'+(' exp-fill' if j==0 else ''))
+  container.append(card)
+ projects=''.join(f'<div class="mb-4"><h3>{h(p["name_"+lang])}</h3><p>{h(p["text_"+lang])}</p><p><a href="{h(p["url"])}" target="_blank" rel="noopener">{h(p["link_"+lang])} <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p></div>' for p in D['projects'][:4])
+ exp.addnext(section('research','研究项目' if zh else 'Research Projects',projects))
+ if zh:
+  for e in x.xpath('//*[@id="section-markdown"]//h1'):e.text='珍藏时刻'
+ contact=one(x,'//*[@id="contact"]');one(contact,'.//h1').text='联系方式' if zh else 'Contact'
+ inner(one(contact,'.//div[@class="col-12 col-lg-8"]'),f'<ul class="fa-ul"><li><i class="fa-li fas fa-envelope fa-2x" aria-hidden="true"></i><span id="person-email"><a href="mailto:{D["email"]}">{D["email"]}</a></span></li><li><i class="fa-li fas fa-university fa-2x" aria-hidden="true"></i><span>{"复旦大学生命科学学院微生物系<br>中国上海" if zh else "Department of Microbiology, School of Life Sciences<br>Fudan University, Shanghai, China"}</span></li></ul>')
+ foot=one(x,'//footer');inner(foot,f'<p class="powered-by">© 2026 {D["name_"+lang]} · <a href="{D["github"]}">GitHub</a></p><p class="powered-by">Published with <a href="https://hugoblox.com/" target="_blank" rel="noopener">Hugo Blox Builder</a></p>')
+ for s in x.xpath('//script[contains(@src,"wowchemy-map")] | //script[contains(@src,"leaflet")]'):s.getparent().remove(s)
+ head=one(x,'//head');head.append(fragment('<style>.academic-publications{padding-left:1.25rem}.academic-publications li{padding-left:.2rem;margin-bottom:1.7rem}.pub-doi{font-size:.85em;overflow-wrap:anywhere}.cv-downloads{font-size:.9em}.network-icon{flex-wrap:wrap}#profile .network-icon .big-icon{font-size:1.7rem}html[lang="zh-CN"] body{font-family:Roboto,"PingFang SC","Microsoft YaHei",sans-serif}html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-family:Montserrat,"PingFang SC","Microsoft YaHei",sans-serif}@media(max-width:575px){.academic-publications{padding-left:1rem}.home-section{padding:55px 0}.pub-doi{word-break:break-all}}@media(min-width:992px){#about{min-height:calc(100vh - 70px)}}</style>'))
+ for l in ['en','zh-CN','x-default']:
+  head.append(fragment(f'<link rel="alternate" hreflang="{l}" href="{D["website"]+("zh/" if l=="zh-CN" else "")}">'))
+ result=H.tostring(x,encoding='unicode',doctype='<!DOCTYPE html>').replace('https://example.com/',D['website'])
+ out=SITE/('zh/index.html' if zh else 'index.html');out.parent.mkdir(exist_ok=True,parents=True);out.write_text(re.sub(r'\n{3,}', '\n\n', '\n'.join(line.rstrip() for line in result.splitlines())).strip()+'\n')
+print('Restored original Academic layout and generated English / Chinese homepages.')
