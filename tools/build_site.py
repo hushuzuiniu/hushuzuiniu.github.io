@@ -76,12 +76,17 @@ for lang in ['en','zh']:
  phd=D['current_research']
  phd=dict(phd,role_en='PhD Student',role_zh='博士研究生')
  ed={'institution_en':'The University of Edinburgh','institution_zh':'爱丁堡大学','role_en':'MSc Research','role_zh':'硕士阶段研究','date_en':'Feb – Sep 2022','date_zh':'2022.02—2022.09','bullets_en':[D['projects'][3]['text_en']],'bullets_zh':[D['projects'][3]['text_zh']]}
- for j,(e,logo,link) in enumerate([(phd,None,'https://www.fudan.edu.cn/'),(D['experience'][0],'gene','https://www.rightongene.com/'),(D['experience'][1],'hku','https://www.hku.hk/'),(ed,'uoe','https://www.ed.ac.uk/'),(D['experience'][2],'wo','https://www.scwwt.com/')]):
+ for j,(e,logo,link) in enumerate([(phd,'fudan','https://www.fudan.edu.cn/'),(D['experience'][0],'gene','https://www.rightongene.com/'),(D['experience'][1],'hku','https://www.hku.hk/'),(ed,'uoe','https://www.ed.ac.uk/'),(D['experience'][2],'wo','https://www.scwwt.com/')]):
   card=deepcopy(template);one(card,'.//div[contains(@class,"exp-title")]').text=e['role_'+lang]
   inner(one(card,'.//div[contains(@class,"exp-company")]'),f'<a href="{link}" target="_blank" rel="noopener">{h(e["institution_"+lang])}</a>')
   inner(one(card,'.//div[contains(@class,"exp-meta")]'),h(e['date_'+lang]))
   ico=one(card,'.//div[@class="mr-2 mb-2"]')
-  inner(ico,f'<img src="/media/icons/brands/{logo}.svg" width="56" height="56" alt="{h(e["institution_"+lang])}" loading="lazy">' if logo else '<span class="fas fa-graduation-cap fa-2x" style="width:56px" aria-hidden="true"></span>')
+  if logo=='fudan':
+   # Original PNG from Fudan's official identity download; display its blue emblem as a sprite.
+   label='复旦大学校徽' if zh else 'Fudan University emblem'
+   inner(ico,f'<span class="fudan-emblem" role="img" aria-label="{label}"><img src="/media/icons/brands/fudan.png" width="2267" height="1661" alt="" loading="lazy" decoding="async"></span>')
+  else:
+   inner(ico,f'<img src="/media/icons/brands/{logo}.svg" width="56" height="56" alt="{h(e["institution_"+lang])}" loading="lazy">')
   inner(one(card,'.//div[@class="card-text"]'),'<ul>'+''.join('<li>'+h(b)+'</li>' for b in e['bullets_'+lang])+'</ul>')
   one(card,'.//span[contains(@class,"badge")]').set('class','badge badge-pill border'+(' exp-fill' if j==0 else ''))
   container.append(card)
@@ -102,7 +107,7 @@ for lang in ['en','zh']:
  head=one(x,'//head');head.append(fragment('<style>.skill-detail{font-size:.82rem;line-height:1.55;margin:8px 0 18px}.skills-name{font-weight:600}.language-scores{font-size:.85rem}.academic-publications{padding-left:1.25rem}.academic-publications li{padding-left:.2rem;margin-bottom:1.7rem}.pub-doi{font-size:.85em;overflow-wrap:anywhere}.network-icon{flex-wrap:wrap}#profile .network-icon .big-icon{font-size:1.7rem}html[lang="zh-CN"] body{font-family:Roboto,"PingFang SC","Microsoft YaHei",sans-serif}html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-family:Montserrat,"PingFang SC","Microsoft YaHei",sans-serif}@media(max-width:575px){.academic-publications{padding-left:1rem}.home-section{padding:55px 0}.pub-doi{word-break:break-all}}@media(min-width:992px){#about{min-height:calc(100vh - 70px)}}</style>'))
  for l in ['en','zh-CN','x-default']:
   head.append(fragment(f'<link rel="alternate" hreflang="{l}" href="{D["website"]+("zh/" if l=="zh-CN" else "")}">'))
- head.append(fragment('<style>#research{scroll-margin-top:70px}.research-intro{margin-bottom:2rem}.research-project{margin-bottom:2.75rem;scroll-margin-top:90px}.research-project:last-child{margin-bottom:0}.research-project h3{margin-bottom:.35rem}.project-meta{font-size:.82rem;opacity:.72;margin-bottom:1rem}.project-label{margin-bottom:.35rem}.project-contributions{padding-left:1.25rem;margin-bottom:1rem}.project-contributions li{margin-bottom:.35rem}.project-output{margin-bottom:.6rem}.project-links{margin-bottom:0}</style>'))
+ head.append(fragment('<style>.fudan-emblem{position:relative;display:block;width:56px;height:56px;overflow:hidden;border-radius:50%;background:#fff}.fudan-emblem img{position:absolute;top:4px;left:4px;width:147.25px;height:auto;max-width:none}#research{scroll-margin-top:70px}.research-intro{margin-bottom:2rem}.research-project{margin-bottom:2.75rem;scroll-margin-top:90px}.research-project:last-child{margin-bottom:0}.research-project h3{margin-bottom:.35rem}.project-meta{font-size:.82rem;opacity:.72;margin-bottom:1rem}.project-label{margin-bottom:.35rem}.project-contributions{padding-left:1.25rem;margin-bottom:1rem}.project-contributions li{margin-bottom:.35rem}.project-output{margin-bottom:.6rem}.project-links{margin-bottom:0}</style>'))
  result=H.tostring(x,encoding='unicode',doctype='<!DOCTYPE html>').replace('https://example.com/',D['website'])
  out=SITE/('zh/index.html' if zh else 'index.html');out.parent.mkdir(exist_ok=True,parents=True);out.write_text(re.sub(r'\n{3,}', '\n\n', '\n'.join(line.rstrip() for line in result.splitlines())).strip()+'\n')
 print('Restored original Academic layout and generated English / Chinese homepages.')

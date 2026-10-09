@@ -1,0 +1,6 @@
+Fudan University official blue emblem
+Source page: https://www.fudan.edu.cn/fdbsxz/list.htm
+Archive: https://www.fudan.edu.cn/_upload/article/files/bf/08/728cadcb4c309a684ce1ea34a913/15ef31ee-d680-4ca7-908f-62d2fbc55559.rar
+Original asset: 01校徽原稿.png
+Retrieved: 2026-10-09
+The official PNG is unmodified. The website displays the blue emblem using a CSS sprite viewport.
