@@ -104,8 +104,8 @@
         "Ye D"
       ],
       "title": "Paired Env-antibody representation learning predicts HIV-1 neutralization and traces antibody escape across viral evolution",
-      "venue": "Cell Reports Medicine",
-      "short_venue": "Cell Reports Medicine",
+      "venue": "Cell Reports Methods",
+      "short_venue": "Cell Reports Methods",
       "details": "",
       "doi": "",
       "status_en": "Under revision",
@@ -293,11 +293,11 @@
     "date_en": "Sep 2025 – present",
     "date_zh": "2025.09—至今",
     "bullets_en": [
-      "Co-developed the UniCAV model and training framework; curated datasets, conducted computational analyses and benchmarks, and drafted the manuscript (co-first author; Cell Reports Medicine, under revision).",
+      "Co-developed the UniCAV model and training framework; curated datasets, conducted computational analyses and benchmarks, and drafted the manuscript (co-first author; Cell Reports Methods, under revision).",
       "Contributed to ViroBench, a benchmark study of nucleotide foundation models published at KDD 2026."
     ],
     "bullets_zh": [
-      "共同设计并实现UniCAV模型及训练框架，承担数据整理、计算分析、基准评测与初稿撰写；共同第一作者稿件正在Cell Reports Medicine返修。",
+      "共同设计并实现UniCAV模型及训练框架，承担数据整理、计算分析、基准评测与初稿撰写；共同第一作者稿件正在Cell Reports Methods返修。",
       "参与核酸基础模型评测研究ViroBench，相关成果发表于KDD 2026。"
     ]
   },
