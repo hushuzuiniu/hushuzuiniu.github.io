@@ -39,10 +39,6 @@ for lang in ['en','zh']:
  inner(soc,''.join(f'<li><a href="{h(u)}" target="_blank" rel="noopener" aria-label="{label}"><i class="{ico} big-icon" aria-hidden="true"></i></a></li>' for u,ico,label in socials))
  about=one(x,'//*[@id="about"]');one(about,'.//h1').text='个人简介' if zh else 'Biography'
  bio='<p>'+h(D['bio_'+lang])+'</p>'
- bio+='<p class="cv-downloads">'+('简历下载：' if zh else 'Curriculum vitae: ')
- for code,label in [('EN','English'),('ZH','中文')]:
-  bio+=f'<a href="/uploads/Shu_Hu_CV_{code}.pdf" target="_blank" rel="noopener">{label} PDF</a> · <a href="/uploads/Shu_Hu_CV_{code}.docx">Word</a> &nbsp; '
- bio+='</p>'
  inner(one(about,'.//div[@class="article-style"]'),bio)
  subs=about.xpath('.//div[@class="section-subheading"]');subs[0].text='研究兴趣' if zh else 'Interests';subs[1].text='教育背景' if zh else 'Education'
  interests=['AI大模型与基础模型','深度学习与序列表征','病毒进化与基因组流行病学'] if zh else ['AI and foundation models','Deep learning and sequence representations','Viral evolution and genomic epidemiology']
@@ -89,7 +85,13 @@ for lang in ['en','zh']:
   inner(one(card,'.//div[@class="card-text"]'),'<ul>'+''.join('<li>'+h(b)+'</li>' for b in e['bullets_'+lang])+'</ul>')
   one(card,'.//span[contains(@class,"badge")]').set('class','badge badge-pill border'+(' exp-fill' if j==0 else ''))
   container.append(card)
- projects=''.join(f'<div class="mb-4"><h3>{h(p["name_"+lang])}</h3><p>{h(p["text_"+lang])}</p><p><a href="{h(p["url"])}" target="_blank" rel="noopener">{h(p["link_"+lang])} <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p></div>' for p in D.get('ai_projects',[])+D['projects'][:4])
+ projects='<p class="research-intro">'+h(D['research_intro_'+lang])+'</p>'
+ for p in D['research_projects']:
+  projects+=f'<article class="research-project" id="project-{h(p["id"])}"><h3>{h(p["name_"+lang])}</h3><p class="project-meta">{h(p["meta_"+lang])}</p><p>{h(p["summary_"+lang])}</p>'
+  projects+='<p class="project-label"><strong>'+('我的工作' if zh else 'My contributions')+'</strong></p><ul class="project-contributions">'
+  projects+=''.join('<li>'+h(t)+'</li>' for t in p['contributions_'+lang])+'</ul>'
+  projects+='<p class="project-output"><strong>'+('相关成果：' if zh else 'Output: ')+'</strong>'+h(p['output_'+lang])+'</p>'
+  projects+='<p class="project-links">'+' · '.join(f'<a href="{h(link["url"])}" target="_blank" rel="noopener">{h(link["label_"+lang])} <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>' for link in p['links'])+'</p></article>'
  exp.addnext(section('research','研究项目' if zh else 'Research Projects',projects))
  if zh:
   for e in x.xpath('//*[@id="section-markdown"]//h1'):e.text='珍藏时刻'
@@ -97,9 +99,10 @@ for lang in ['en','zh']:
  inner(one(contact,'.//div[@class="col-12 col-lg-8"]'),f'<ul class="fa-ul"><li><i class="fa-li fas fa-envelope fa-2x" aria-hidden="true"></i><span id="person-email"><a href="mailto:{D["email"]}">{D["email"]}</a></span></li><li><i class="fa-li fas fa-university fa-2x" aria-hidden="true"></i><span>{"复旦大学生命科学学院微生物系<br>中国上海" if zh else "Department of Microbiology, School of Life Sciences<br>Fudan University, Shanghai, China"}</span></li></ul>')
  foot=one(x,'//footer');inner(foot,f'<p class="powered-by">© 2026 {D["name_"+lang]} · <a href="{D["github"]}">GitHub</a></p><p class="powered-by">Published with <a href="https://hugoblox.com/" target="_blank" rel="noopener">Hugo Blox Builder</a></p>')
  for s in x.xpath('//script[contains(@src,"wowchemy-map")] | //script[contains(@src,"leaflet")]'):s.getparent().remove(s)
- head=one(x,'//head');head.append(fragment('<style>.skill-detail{font-size:.82rem;line-height:1.55;margin:8px 0 18px}.skills-name{font-weight:600}.language-scores{font-size:.85rem}.academic-publications{padding-left:1.25rem}.academic-publications li{padding-left:.2rem;margin-bottom:1.7rem}.pub-doi{font-size:.85em;overflow-wrap:anywhere}.cv-downloads{font-size:.9em}.network-icon{flex-wrap:wrap}#profile .network-icon .big-icon{font-size:1.7rem}html[lang="zh-CN"] body{font-family:Roboto,"PingFang SC","Microsoft YaHei",sans-serif}html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-family:Montserrat,"PingFang SC","Microsoft YaHei",sans-serif}@media(max-width:575px){.academic-publications{padding-left:1rem}.home-section{padding:55px 0}.pub-doi{word-break:break-all}}@media(min-width:992px){#about{min-height:calc(100vh - 70px)}}</style>'))
+ head=one(x,'//head');head.append(fragment('<style>.skill-detail{font-size:.82rem;line-height:1.55;margin:8px 0 18px}.skills-name{font-weight:600}.language-scores{font-size:.85rem}.academic-publications{padding-left:1.25rem}.academic-publications li{padding-left:.2rem;margin-bottom:1.7rem}.pub-doi{font-size:.85em;overflow-wrap:anywhere}.network-icon{flex-wrap:wrap}#profile .network-icon .big-icon{font-size:1.7rem}html[lang="zh-CN"] body{font-family:Roboto,"PingFang SC","Microsoft YaHei",sans-serif}html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-family:Montserrat,"PingFang SC","Microsoft YaHei",sans-serif}@media(max-width:575px){.academic-publications{padding-left:1rem}.home-section{padding:55px 0}.pub-doi{word-break:break-all}}@media(min-width:992px){#about{min-height:calc(100vh - 70px)}}</style>'))
  for l in ['en','zh-CN','x-default']:
   head.append(fragment(f'<link rel="alternate" hreflang="{l}" href="{D["website"]+("zh/" if l=="zh-CN" else "")}">'))
+ head.append(fragment('<style>#research{scroll-margin-top:70px}.research-intro{margin-bottom:2rem}.research-project{margin-bottom:2.75rem;scroll-margin-top:90px}.research-project:last-child{margin-bottom:0}.research-project h3{margin-bottom:.35rem}.project-meta{font-size:.82rem;opacity:.72;margin-bottom:1rem}.project-label{margin-bottom:.35rem}.project-contributions{padding-left:1.25rem;margin-bottom:1rem}.project-contributions li{margin-bottom:.35rem}.project-output{margin-bottom:.6rem}.project-links{margin-bottom:0}</style>'))
  result=H.tostring(x,encoding='unicode',doctype='<!DOCTYPE html>').replace('https://example.com/',D['website'])
  out=SITE/('zh/index.html' if zh else 'index.html');out.parent.mkdir(exist_ok=True,parents=True);out.write_text(re.sub(r'\n{3,}', '\n\n', '\n'.join(line.rstrip() for line in result.splitlines())).strip()+'\n')
 print('Restored original Academic layout and generated English / Chinese homepages.')

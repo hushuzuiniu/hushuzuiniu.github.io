@@ -123,13 +123,14 @@
     {
       "id": "schwab2026epistasis",
       "year": 2026,
-      "authors": "Schwab LSU, Xie R, Reilly E, Aban M, Spirason N, Deng YM, Hu S, et al.",
+      "authors": "Schwab LSU, Xie R, Reilly E, Aban M, Hu S, Spirason N, Deng YM, et al.",
       "title": "Epistasis facilitates the long-term antigenic evolution of the influenza B virus hemagglutinin",
       "venue": "bioRxiv",
       "short_venue": "bioRxiv",
       "details": "",
       "doi": "10.64898/2026.07.22.739994",
-      "source": "https://www.biorxiv.org/content/10.64898/2026.07.22.739994v1"
+      "source": "https://www.biorxiv.org/content/10.64898/2026.07.22.739994v1",
+      "author_order_source": "Author list supplied by the user on 2026-10-09; Shu Hu is fifth."
     },
     {
       "id": "xie2026scalable",
@@ -305,6 +306,221 @@
       "url": "https://doi.org/10.1145/3770855.3819057",
       "link_en": "ViroBench publication",
       "link_zh": "ViroBench论文"
+    }
+  ],
+  "research_intro_en": "My projects connect foundation models and deep learning with biological sequence analysis, genomic epidemiology, transcriptomics and cancer genomics.",
+  "research_intro_zh": "研究工作围绕基础模型与深度学习、生物序列分析、基因组流行病学，以及转录组与肿瘤基因组数据分析展开。",
+  "research_projects": [
+    {
+      "id": "unicav",
+      "name_en": "UniCAV: Paired sequence representation learning",
+      "name_zh": "UniCAV：配对序列表征学习",
+      "meta_en": "Deep learning · Biological sequence representations",
+      "meta_zh": "深度学习 · 生物序列表征",
+      "summary_en": "UniCAV is a computational research project applying sequence representation learning and deep learning to the analysis of HIV-1 neutralization data. The work brings together model development, data curation and comparative evaluation.",
+      "summary_zh": "UniCAV将序列表征学习与深度学习用于HIV-1中和数据的计算分析，研究工作涵盖模型开发、数据整理与比较评估。",
+      "contributions_en": [
+        "Co-developed the model and training framework, and curated datasets for computational analysis.",
+        "Conducted analyses and benchmarking, prepared figures, and contributed to drafting the manuscript."
+      ],
+      "contributions_zh": [
+        "共同设计并实现模型及训练框架，整理用于计算分析的数据集。",
+        "承担计算分析、基准评测、图表制作与论文初稿撰写。"
+      ],
+      "output_en": "Manuscript under revision at Cell Reports Methods; research code is publicly available.",
+      "output_zh": "相关稿件正在Cell Reports Methods返修；研究代码已公开。",
+      "links": [
+        {
+          "url": "https://github.com/hushuzuiniu/UniCAV",
+          "label_en": "UniCAV code",
+          "label_zh": "UniCAV代码"
+        }
+      ]
+    },
+    {
+      "id": "virobench",
+      "name_en": "ViroBench: Evaluating nucleotide foundation models",
+      "name_zh": "ViroBench：核酸基础模型评测",
+      "meta_en": "Foundation models · Viral genomics · KDD 2026",
+      "meta_zh": "基础模型 · 病毒基因组学 · KDD 2026",
+      "summary_en": "ViroBench is a collaborative benchmark study of nucleotide foundation models on viral genomics tasks. It examines the use of learned sequence representations in this research setting, with an emphasis on model comparison and evaluation.",
+      "summary_zh": "ViroBench是一项面向病毒基因组学任务的核酸基础模型评测研究，关注学习得到的序列表征在相关研究场景中的应用，以及模型的比较与评估。",
+      "contributions_en": [
+        "Contributed to the collaborative study as a co-author, extending my research experience in foundation-model evaluation and computational virology."
+      ],
+      "contributions_zh": [
+        "作为合作作者参与该项研究，积累核酸基础模型评测与计算病毒学的交叉研究经验。"
+      ],
+      "output_en": "Published in the proceedings of the 32nd ACM SIGKDD Conference on Knowledge Discovery and Data Mining, 2026.",
+      "output_zh": "研究成果发表于第32届ACM SIGKDD国际会议论文集（2026）。",
+      "links": [
+        {
+          "url": "https://doi.org/10.1145/3770855.3819057",
+          "label_en": "KDD publication",
+          "label_zh": "KDD论文"
+        }
+      ]
+    },
+    {
+      "id": "phylodynamics",
+      "name_en": "Integrating contact tracing and phylogenetic analysis",
+      "name_zh": "接触者追踪与系统发育分析的整合",
+      "meta_en": "Computational epidemiology · Deep learning",
+      "meta_zh": "计算流行病学 · 深度学习",
+      "summary_en": "This collaborative project combines epidemiological observations with phylogenetic information to study outbreak dynamics. It connects data analysis and computational modeling with questions in infectious-disease epidemiology.",
+      "summary_zh": "该合作项目结合流行病学观测与系统发育信息研究疫情动态，将数据分析、计算建模与传染病流行病学问题相联系。",
+      "contributions_en": [
+        "Contributed to research integrating contact-tracing data with phylogenetic analysis.",
+        "Participated in computational analysis and methodological work within a collaborative research team."
+      ],
+      "contributions_zh": [
+        "参与将接触者追踪数据与系统发育分析相结合的研究。",
+        "在合作团队中承担计算分析与方法研究相关工作。"
+      ],
+      "output_en": "The collaborative study was published in Molecular Biology and Evolution in 2024.",
+      "output_zh": "相关合作成果发表于Molecular Biology and Evolution（2024）。",
+      "links": [
+        {
+          "url": "https://doi.org/10.1093/molbev/msae232",
+          "label_en": "MBE publication",
+          "label_zh": "MBE论文"
+        }
+      ]
+    },
+    {
+      "id": "genomic-epidemiology",
+      "name_en": "Viral evolution and genomic epidemiology",
+      "name_zh": "病毒进化与基因组流行病学",
+      "meta_en": "Collaborative research · Genomic and epidemiological data",
+      "meta_zh": "合作研究 · 基因组与流行病学数据",
+      "summary_en": "My research experience includes bioinformatics studies of influenza and RSV, using genomic data to investigate viral diversity and epidemiological patterns. Collaborative studies have included avian influenza in Cambodia and southern China.",
+      "summary_zh": "围绕流感与RSV开展生物信息学研究，利用基因组数据分析病毒多样性与流行病学特征。相关合作研究包括柬埔寨及中国南方的禽流感研究。",
+      "contributions_en": [
+        "Integrated genomic datasets with clinical and immunological information for joint analysis.",
+        "Conducted bioinformatics analyses and contributed to the collaborative interpretation of research findings."
+      ],
+      "contributions_zh": [
+        "整合基因组、临床与免疫学信息，开展联合分析。",
+        "承担生物信息学分析，并参与团队对研究结果的综合解读。"
+      ],
+      "output_en": "Selected collaborative publications appeared in the New England Journal of Medicine and Journal of Virology in 2025.",
+      "output_zh": "代表性合作成果发表于New England Journal of Medicine及Journal of Virology（2025）。",
+      "links": [
+        {
+          "url": "https://doi.org/10.1056/NEJMc2504302",
+          "label_en": "NEJM publication",
+          "label_zh": "NEJM论文"
+        },
+        {
+          "url": "https://doi.org/10.1128/jvi.01145-24",
+          "label_en": "JVI publication",
+          "label_zh": "JVI论文"
+        }
+      ]
+    },
+    {
+      "id": "single-cell",
+      "name_en": "Automated single-cell RNA-seq analysis workflows",
+      "name_zh": "单细胞RNA测序自动化分析流程",
+      "meta_en": "Workflow development · Shell and R",
+      "meta_zh": "分析流程开发 · Shell与R",
+      "summary_en": "This project connects upstream sequencing-data processing with downstream single-cell analysis. The work focuses on organizing analysis steps into configurable workflows that can be used within an automated analysis platform.",
+      "summary_zh": "该项目衔接测序数据的上游处理与单细胞下游分析，将分析步骤整理为可配置的工作流程，并支持自动化分析平台中的应用。",
+      "contributions_en": [
+        "Developed Shell-based upstream processing and R-based downstream analysis with configurable parameters.",
+        "Collaborated with IT colleagues to deploy the workflows on an automated analysis platform."
+      ],
+      "contributions_zh": [
+        "使用Shell开发上游处理流程，使用R实现下游分析，并通过参数配置支持不同分析需求。",
+        "与IT团队协作完成流程整合及自动化平台部署。"
+      ],
+      "output_en": "Integrated upstream and downstream analysis workflows, with project code available on GitHub.",
+      "output_zh": "形成衔接上下游的单细胞分析流程，项目代码可通过GitHub访问。",
+      "links": [
+        {
+          "url": "https://github.com/hushuzuiniu/scRNA-seq-anlaysis",
+          "label_en": "Analysis code",
+          "label_zh": "分析代码"
+        }
+      ]
+    },
+    {
+      "id": "leukemia-subtyping",
+      "name_en": "RNA-seq models for leukemia molecular subtyping",
+      "name_zh": "基于RNA测序的白血病分子分型",
+      "meta_en": "Transcriptomics · Molecular classification",
+      "meta_zh": "转录组学 · 分子分类",
+      "summary_en": "This project studies expression-based molecular classification of leukemia. It uses RNA-seq expression profiles to support subtype modeling and the interpretation of transcriptomic differences between leukemia groups.",
+      "summary_zh": "该项目研究基于基因表达的白血病分子分类，利用RNA测序表达谱开展亚型建模，并辅助理解不同白血病类别的转录组差异。",
+      "contributions_en": [
+        "Developed expression-based models for predicting molecular subtypes of leukemia.",
+        "Framed the analysis around subtype differences relevant to clinical characteristics and prognosis."
+      ],
+      "contributions_zh": [
+        "基于表达数据开发白血病分子亚型预测模型。",
+        "围绕不同亚型的临床特征与预后差异组织分析问题。"
+      ],
+      "output_en": "RNA-seq analysis and molecular-subtyping code are available in the project repository.",
+      "output_zh": "相关RNA测序分析与分子分型代码整理于项目仓库。",
+      "links": [
+        {
+          "url": "https://github.com/hushuzuiniu/RNA-seq-cluster",
+          "label_en": "Analysis code",
+          "label_zh": "分析代码"
+        }
+      ]
+    },
+    {
+      "id": "cancer-genomics",
+      "name_en": "Cancer genomics and copy-number analysis",
+      "name_zh": "肿瘤基因组与拷贝数分析",
+      "meta_en": "Industry research · Sequencing analysis methods",
+      "meta_zh": "产业研发 · 测序分析方法",
+      "summary_en": "My industry work included the development of bioinformatics methods for gene-fusion and copy-number analysis. The projects connected sequencing-data analysis with practical questions arising in molecular-testing workflows.",
+      "summary_zh": "产业研发工作包括基因融合与拷贝数分析方法开发，将测序数据分析与分子检测流程中的实际问题相结合。",
+      "contributions_en": [
+        "Developed analysis methods for BCL6, BCL2 and MYC fusions in DLBCL workflows, addressing discrepancies between NGS and FISH results.",
+        "Established low-depth whole-genome sequencing workflows for copy-number analysis using QDNAseq, Control-FREEC and ichorCNA."
+      ],
+      "contributions_zh": [
+        "围绕弥漫大B细胞淋巴瘤中的BCL6、BCL2和MYC基因融合开发分析方法，处理NGS与FISH结果不一致的问题。",
+        "整合QDNAseq、Control-FREEC和ichorCNA，搭建低深度全基因组测序拷贝数分析流程。"
+      ],
+      "output_en": "Contributed to bioinformatics method and workflow development in industry; related analysis code is available on GitHub.",
+      "output_zh": "参与产业场景中的生物信息学方法与流程开发，相关分析代码可通过GitHub访问。",
+      "links": [
+        {
+          "url": "https://github.com/hushuzuiniu/DNA-CNV",
+          "label_en": "Related analysis code",
+          "label_zh": "相关分析代码"
+        }
+      ]
+    },
+    {
+      "id": "shiny-transcriptomics",
+      "name_en": "Interactive transcriptomics with R Shiny",
+      "name_zh": "基于R Shiny的交互式转录组分析",
+      "meta_en": "MSc research · The University of Edinburgh",
+      "meta_zh": "硕士阶段研究 · 爱丁堡大学",
+      "summary_en": "During my MSc research, I developed tools for interactive exploration of RNA-seq data. The project connects R programming with Shiny application development to make transcriptomic analyses accessible through an interactive interface.",
+      "summary_zh": "硕士阶段开发用于RNA测序数据交互式探索的工具，将R编程与Shiny应用开发相结合，通过交互界面呈现转录组分析。",
+      "contributions_en": [
+        "Created reusable Shiny modules for applications working with sequencing data.",
+        "Developed R scripts for interactive exploration of RNA-seq datasets."
+      ],
+      "contributions_zh": [
+        "开发可复用的Shiny模块，用于构建测序数据分析应用。",
+        "编写R脚本，支持RNA测序数据集的交互式探索。"
+      ],
+      "output_en": "Reusable analysis scripts and Shiny components for transcriptomics, with related code available on GitHub.",
+      "output_zh": "形成可复用的转录组分析脚本与Shiny组件，相关代码可通过GitHub访问。",
+      "links": [
+        {
+          "url": "https://github.com/hushuzuiniu/shiny_liver",
+          "label_en": "Related R Shiny code",
+          "label_zh": "相关R Shiny代码"
+        }
+      ]
     }
   ]
 }
